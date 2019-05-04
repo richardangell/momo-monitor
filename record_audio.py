@@ -15,7 +15,7 @@ def record(s, output_dir):
     WAVE_OUTPUT_FILENAME = output_dir.joinpath(datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".wav")
     
     audio = pyaudio.PyAudio()
-    
+
     # start Recording
     stream = audio.open(
         format=FORMAT, 
@@ -59,7 +59,15 @@ if __name__ == '__main__':
 
         print(j, 'beginning recording..', datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
 
-        record(s = 60 * minute_chunk, output_dir = output_dir)
+        try:
+
+          record(s = 60 * minute_chunk, output_dir = output_dir)
+
+        # if OSError: [Errno -9981] Input overflowed happens try again
+        except OSError: 
+
+          record(s = 60 * minute_chunk, output_dir = output_dir)
+
 
 
 
